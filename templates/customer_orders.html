@@ -1,0 +1,57 @@
+{% extends 'headfoot.html' %}
+
+{% load static %}
+
+
+{% block title %}Customer Orders{% endblock title %}
+
+
+
+{% block body %}
+
+{% for order in orders %}
+<!-- {{order.product}}
+{{user.customer_profile.id}} -->
+<!-- {{order.notify_seller.phone.id}} -->
+<!-- {% if order.notify_seller %} -->
+{% if order.notify_seller.phone.id == user.customer_profile.id  %}
+
+<div class="max-w-xl mx-auto my-4 text-xl">
+    <div class="space-y-4 bg-green-200 text-center p-2 font-semibold flex space-x-4">
+            <img class="max-w-lg h-40" src="/media/{{order.product.image}}" alt="">
+            <div class=" my-auto ">
+                <h2 id="">{{order.product.name}}</h2>
+                
+                <label class="text-blue-900 text-sm" for="quantity">weight(quantity):</label>
+                    <div>
+                        <input class="w-20" type="number" id="quantity" name="quantity" value="{{order.quantity}}" readonly >
+                        <label for="quantity">kg</label>
+                    </div>
+                        
+                    <p class="pt-2">
+                        {% for prods in adminproducts %}
+                        {% if order.product.id == prods.product.id %}
+                          Cost Price: ₹ {% widthratio prods.cost_price 1 order.quantity %}
+                        {% endif %}
+                        {% endfor %} 
+                    </p>
+            </div>
+    </div>
+    <p class="text-blue-900 bg-green-200 text-sm pl-4">
+        Order date: {{order.date}}       
+    </p>
+</div>
+
+
+
+{% endif %}
+<!-- {% endif %} -->
+                             
+
+
+   
+{% endfor %}
+
+
+
+{% endblock body %}

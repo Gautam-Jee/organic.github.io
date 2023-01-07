@@ -1,0 +1,57 @@
+{% extends 'headfoot.html' %}
+
+{% load static %}
+
+
+{% block title %}Contact{% endblock title %}
+
+
+
+{% block body %}
+
+{% if messages %}
+<div class="p-5 my-2 bg-green-400 text-white font-sans text-2xl">
+    <span class=" font-bold float-right cursor-pointer hover:text-black text-4xl"
+        onclick="this.parentElement.style.display='none';">&times;</span>
+    {% for message in messages %}
+    <span {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</span>
+    {% endfor %}
+</div>
+{% endif %}
+
+
+<div class="font-bold text-2xl font-sans bg-green-200 p-4 text-center my-2">
+    Please send below details our team will contact you within 24 hours between 7 A.M to 7 P.M.
+</div>
+
+<form class="font-bold space-y-4 text-xl font-sans my-4 p-4 bg-green-200 text-center" action="/contact/" method="post">
+    {% csrf_token %}
+
+     <div>
+        <label for="issue"> Reason to contact: </label> <br>
+        <textarea class="text-sm p-4" name="issue" id="issue" cols="30" rows="5" placeholder="Mention your issue here" required></textarea>
+
+     </div>
+    <div>
+        <label for="phone">Mobile Number: </label> <br>
+        <input class="text-sm p-2" id="phone" name="phone" type="tel" placeholder="Enter mobile number" required>
+
+    </div>
+
+    <div>
+        <label for="time">Time slot: </label> <br>
+        <select class="text-sm p-2" name="time" id="time" required>
+        <option  value="between 7 A.M to 9 A.M">between 7 A.M to 9 A.M</option>
+        <option  value="between 10 A.M to 5 P.M">between 10 A.M to 5 P.M</option>
+        <option  value="between 5 P.M to 7 P.M">between 5 P.M to 7 P.M</option>
+        </select>
+    </div>
+
+    <button class="text-2xl px-4 py-2 my-5 rounded-full bg-green-700  hover:bg-green-900 text-center text-white" type="submit">Send</button>
+
+
+
+</form>
+
+
+{% endblock body %}

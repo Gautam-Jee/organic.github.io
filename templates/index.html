@@ -1,0 +1,190 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+
+{% block title %}Home{% endblock title %}
+
+
+
+{% block body %}
+
+
+{% if messages %}
+<div class="p-5 my-2 bg-green-400 text-white font-sans text-2xl">
+    <span class=" font-bold float-right cursor-pointer hover:text-black text-4xl"
+        onclick="this.parentElement.style.display='none';">&times;</span>
+    {% for message in messages %}
+    <span {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</span>
+    {% endfor %}
+</div>
+{% endif %}
+
+
+<!--  Slideshow container -->
+<div class="relative font-sans text-3xl text-white ">
+
+    <!-- Full-width static with number and caption text -->
+    <!-- <div class="hidden"> -->
+    <div class=" hidden mySlides animate-fade">
+        <div class="  py-2 px-3 absolute top-0">1 / 4</div>
+        <img class="h-72 w-full " src="{% static 'images/img6.png' %}">
+        <div class=" py-2 px-3 absolute bottom-2 text-center w-full"></div>
+    </div>
+
+    <div class=" hidden mySlides animate-fade ">
+        <div class=" py-2 px-3 absolute top-0">2 / 4</div>
+        <img class="h-72 w-full " src="{% static 'images/img2.png' %}">
+        <div class=" py-2 px-3 absolute bottom-2 text-center w-full"></div>
+    </div>
+
+    <div class=" hidden mySlides animate-fade ">
+        <div class=" py-2 px-3 absolute top-0">3 / 4</div>
+        <img class="h-72 w-full " src="{% static 'images/img7.png' %}">
+        <div class=" py-2 px-3 absolute bottom-2 text-center w-full"></div>
+    </div>
+
+    <div class="hidden mySlides animate-fade ">
+        <div class="py-2 px-3 absolute top-0">4 / 4</div>
+        <img class="h-72 w-full " src="{% static 'images/img9.png' %}">
+        <div class=" py-2 px-3 absolute bottom-2 text-center w-full"></div>
+    </div>
+
+    <!-- </div> -->
+
+    <!-- Next and previous buttons -->
+    <a class="cursor-pointer absolute top-12  px-4 py-20 text-black font-bold ease-in-out rounded-r-md select-none hover:bg-green-100"
+        onclick="plusSlides(-1)">&#10094;</a>
+    <a class="cursor-pointer absolute top-12 px-4 py-20 text-black font-bold ease-in-out rounded-l-md select-none hover:bg-green-100 right-0"
+        onclick="plusSlides(1)">&#10095;</a>
+</div>
+
+
+                 
+
+
+
+
+<!-- categigries module in the body of page   -->
+<!--  category -->
+{% for product in products %}
+<div class=" font-sans   m-4 bg-green-50  pt-4">
+
+    <div class="border-b-2 pb-4 px-6 border-b-green-200">
+        <a href="/{{product.0.category}}">
+            <h1 class="underline decoration-2 font-extrabold text-2xl">{{product.0.category}}</h1>
+        </a>
+
+    </div>
+
+    <!-- vegetables scrollable cards -->
+
+
+    <div class=" text-xl">
+        
+        <section class=" max-w-full flex  space-x-4  overflow-x-auto py-2 px-2">
+
+        {% for prod in product %}
+            <div class="space-y-4 bg-green-200 text-center">
+                <a class="font-semibold" href="">
+                    <img class="max-w-lg h-40" src="/media/{{prod.image}}" alt="">
+                    <h2 class="">{{prod.name}}</h2>
+                    <p class="text-green-900">
+                        {% if not user.customer_profile %}
+                        <div class="text-red-700 text-lg">Add Address to see price of item.</div>
+                        {% else %}
+                        {% for prods in adminproducts %}
+                        {% if prod.id == prods.product.id %}
+                        <span class="pr-4 line-through text-red-700">₹{{prods.marked_price}}/kg</span>
+                        ₹{{prods.selling_price}}/kg
+                        {% endif %}
+                        {% endfor %}
+
+                        {% endif %}
+                        
+                        
+                        
+                    </p>
+                </a>
+                {% if prod.status == "2" %}
+                <div class="text-red-700 font-extrabold">
+                    Currently Unavailable
+
+                     </div>
+                {% else %} 
+                <div class="text-blue-700 font-normal text-sm">
+                    {{prod.desc}}
+                    
+
+                     </div>
+
+                {% endif %}
+
+
+               
+                <div class="justify-evenly pb-5 text-base flex">
+                {% if prod.id in ids %}
+                    <a class="  py-2 px-4 bg-blue-700 text-white rounded-full hover:bg-green-900" href="/cart" >GoTo cart</a>
+                    {% else %}
+                    {% if prod.status == "2" %}
+                    <form action="{% url 'addcart' prod.id  %}" method="post" disabled>
+                        {% csrf_token %}
+                        <fieldset class="opacity-50 cursor-not-allowed" disabled="disabled">
+                            <input type="hidden" name="current" id="current" value="{{request.path}}">
+                            <input class=" cursor-pointer py-2 px-4 bg-green-700 text-white rounded-full hover:bg-green-900" type="submit" value="Add cart">
+                        </fieldset>
+                    </form>
+                    {% else %}
+                    <form action="{% url 'addcart' prod.id  %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="current" id="current" value="{{request.path}}">
+                        <input class=" cursor-pointer py-2 px-4 bg-green-700 text-white rounded-full hover:bg-green-900" type="submit" value="Add cart">
+                    </form>
+                    {% endif %}
+                {% endif %}
+                    
+                {% if prod.status == "2" %}
+                    <a class="py-2 px-4 bg-green-700 text-white rounded-full hover:bg-green-900 pointer-events-none opacity-50 cursor-not-allowed" href="{% url 'checkout' prod.id  %}">Order</a>
+
+                {% else %}
+                <a class="py-2 px-4 bg-green-700 text-white rounded-full hover:bg-green-900" href="{% url 'checkout' prod.id  %}">Order</a>
+                {% endif %}
+                </div>
+
+               
+                
+            </div>
+        {% endfor %}
+
+
+
+
+           
+
+
+
+
+
+
+
+        </section>
+
+    </div>
+</div>
+
+
+
+
+{% endfor %}
+
+
+
+
+
+{% endblock body %}
+
+    
+    
+</body>
+
+</html>

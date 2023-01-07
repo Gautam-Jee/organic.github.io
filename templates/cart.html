@@ -1,0 +1,420 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+
+{% block title %}Cart{% endblock title %}
+
+{% block body %}
+
+{% if messages %}
+<div class="p-5 my-2 bg-green-400 text-white font-sans text-2xl">
+    <span class=" font-bold float-right cursor-pointer hover:text-black text-4xl"
+        onclick="this.parentElement.style.display='none';">&times;</span>
+    {% for message in messages %}
+    <span {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</span>
+    {% endfor %}
+</div>
+{% endif %}
+
+{% if not user.customer_profile %}
+<div class="border-2 border-green-200 p-4 text-xl text-green-900 font-extrabold">
+    <a href="/profile"> + Add Address</a>
+</div>
+
+{% else %}
+
+<div class=" m-4 p-4 bg-green-100 ">
+
+
+    <a class="text-xl font-bold text-white bg-blue-700 hover:bg-blue-900 rounded-md p-2 float-right "
+        href="{% url 'edit_profile' user.customer_profile.id  %} ">EDIT</a>
+    <h1 class=" font-extrabold  text-2xl">Deliver to : </h1>
+    {{user.customer_profile.First_name}} {{user.customer_profile.Last_name}} <br>
+    {{user.customer_profile.phone}} <br>
+    {{user.customer_profile.address}} <br>
+    {{user.customer_profile.locality}} {{user.customer_profile.pincode}} <br>
+    {{user.customer_profile.city}} {{user.customer_profile.state}} <br>
+    {{user.customer_profile.landmark}} <br>
+    {{user.customer_profile.email}} <br>
+
+</div>
+
+{% endif %}
+
+<script>
+    var sum=0;
+</script>
+
+<div class="text-xl text-center font-normal my-4 border-b-2 border-blue-400">
+    <h1 class="font-bold p-2 border-y-2 border-green-400">Price Details</h1>
+    <table class="my-4 mx-auto">
+        <tbody>
+            <tr>
+                <td>SubTotal Price:</td>
+                <td></td>
+                <td>₹
+                <td id="subtotal"></td>
+                </td>
+
+
+            </tr>
+
+            <tr>
+                <td>Delivery Charges:</td>
+                <td></td>
+                <td>₹
+                <td id="dchar"></td>
+                </td>
+            </tr>
+
+
+
+            <tr>
+                <th>Total:</th>
+                <td>₹
+                <td id="tot"></td>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <input class="hidden" id="totalprice" type="number" name="totalprice" value="" readonly>
+</div>
+
+<p class="text-xl text-center font-bold underline decoration-2">Free Delivery on order of above ₹100</p>
+
+
+<form class="text-xl font-bold my-4" action="{% url 'cart'  %}" method="post">
+    {% csrf_token %}
+    {% for cartitem in cartitems %}
+    <div class="max-w-xl mx-auto my-4 bg-green-200">
+        <a class="text-sm font-bold text-white bg-red-700 hover:bg-red-900 rounded-md p-1 float-right "
+        href="{% url 'delete_item' cartitem.id  %} ">Remove</a>
+        <div class="space-y-4 bg-green-200 text-center p-2 font-semibold flex space-x-4">
+            <img class="w-1/2 h-40" src="/media/{{cartitem.product.image}}" alt="">
+            <div class=" my-auto">
+                <h2 id="">{{cartitem.product.name}}</h2>
+                <p class="text-green-900 ">
+                    <!-- <span class=" line-through text-red-700">₹{{cartitem.product.marked_price}}/kg</span> -->
+                    ₹<input id="sell_{{forloop.counter}}" class="w-8 bg-green-200" type="tel"
+                        
+                        {% for prods in adminproducts %}
+                        {% if cartitem.product.id == prods.product.id %}
+                        value="{{prods.selling_price}}"
+                        {% endif %}
+                        {% endfor %} 
+                        
+                        readonly>/kg
+
+                </p>
+                <label class="text-blue-900 text-sm" for="quantity{{forloop.counter}}">weight(quantity):</label>
+                <div>
+                    <span class="bg-green-700 px-3 text-white cursor-pointer hover:bg-green-900 " onclick="decreaseValue('quantity_{{forloop.counter}}', 'price_{{forloop.counter}}', 'sell_{{forloop.counter}}')">-</span>
+                    <input class="w-1/3 text-center" type="number" id="quantity_{{forloop.counter}}" name="quantity_{{forloop.counter}}" min="0"
+                        value="1" step="0.5">
+                        <span class="bg-green-700 px-2 text-white cursor-pointer hover:bg-green-900 " onclick="increaseValue('quantity_{{forloop.counter}}', 'price_{{forloop.counter}}', 'sell_{{forloop.counter}}')">+</span>
+                    <label for="quantity{{forloop.counter}}">kg</label>
+                </div>
+                <p>
+
+                    Price: ₹<input class="w-1/3 bg-green-200" id="price_{{forloop.counter}}" type="number" name="price_{{forloop.counter}}" value="" readonly>
+                    
+                    <!-- {% widthratio cartitem.product.selling_price 1 1 %} -->
+
+                </p>
+
+
+
+                <script>
+
+                    displayPrice('quantity_{{forloop.counter}}', 'price_{{forloop.counter}}', 'sell_{{forloop.counter}}');
+                    
+
+
+
+                   
+                    function displayPrice(x, y, z) {
+                        var quan = document.getElementById(x).value;
+                        var s = document.getElementById(z).value;
+                        var res = s * quan;
+                        sum += Number(res);
+                        var a = document.getElementById(y);
+                        if(sum<=100){
+                            a.value = 20 + Number(res);
+                        }
+                        else{
+                            var counter = "{{forloop.counter}}";
+                            for(let i=1; i <= Number(counter); i++ ){
+                                var quant = "quantity_" + i;
+                                var sells = "sell_" + i;
+                                var pric = "price_" + i;
+                                var quan = document.getElementById(quant).value;
+                                var s = document.getElementById(sells).value;
+                                var res = s * quan;
+                                var a = document.getElementById(pric);
+                                a.value = res;
+                            }
+                            
+
+                        }
+                        
+
+                        document.getElementById('subtotal').innerHTML = sum;
+                        
+                        var c = 20;
+                        
+                        if (sum <= 100) {
+                            var d = "{{lengthofcart}}";
+                            c *= Number(d);
+                            var p = Number(sum) + Number(c);
+                            // var a = document.getElementById('totalprice');
+                            // a.value = p;
+                            document.getElementById('dchar').innerHTML = c;
+                            document.getElementById('tot').innerHTML = p;
+
+                        }
+                        else {
+                            document.getElementById('tot').innerHTML = sum;
+                            // var a = document.getElementById('totalprice');
+                            // a.value = z;
+                            document.getElementById('dchar').innerHTML = "0";
+                        
+                        }
+
+                    
+                        
+                    
+                        
+
+                        
+                        
+                    }
+
+                    
+                    function increaseValue(x, y, z) {
+                        var quan = document.getElementById(x).value;
+                        var s = document.getElementById(z).value;
+                        var pr = document.getElementById(y).value;
+                        quan = Number(quan) + 0.5;
+                        document.getElementById(x).value = Number(quan);
+                        var res = s * quan;
+                        if(sum<=100){
+                            sum -= Number(pr)-20;
+                        }
+                        else{
+                            sum -= Number(pr);
+
+                        }
+                        
+                        
+                        sum += Number(res);
+                        var a = document.getElementById(y);
+                        if(sum<=100){
+                            a.value = 20 + Number(res);
+                        }
+                        else{
+                            var counter = "{{lengthofcart}}";
+                            for(let i=1; i <= Number(counter); i++ ){
+                                var quant = "quantity_" + i;
+                                var sells = "sell_" + i;
+                                var pric = "price_" + i;
+                                var quan = document.getElementById(quant).value;
+                                var s = document.getElementById(sells).value;
+                                var res = s * quan;
+                                var a = document.getElementById(pric);
+                                a.value = res;
+                            }
+
+                        }
+                        
+
+                        
+                        
+                        document.getElementById('subtotal').innerHTML = sum;
+                        
+                        var c = 20;
+                        
+                        if (sum <= 100) {
+                            var d = "{{lengthofcart}}";
+                            c *= Number(d);
+                            var p = Number(sum) + Number(c);
+                            // var a = document.getElementById('totalprice');
+                            // a.value = p;
+                            document.getElementById('dchar').innerHTML = c;
+                            document.getElementById('tot').innerHTML = p;
+
+                        }
+                        else {
+                            document.getElementById('tot').innerHTML = sum;
+                            // var a = document.getElementById('totalprice');
+                            // a.value = z;
+                            document.getElementById('dchar').innerHTML = "0";
+                        
+                        }
+
+                        
+
+                        
+                        
+                    }
+
+                    
+                    function decreaseValue(x, y, z) {
+                        var quan = document.getElementById(x).value;
+                        var s = document.getElementById(z).value;
+                        var pr = document.getElementById(y).value;
+                        quan= Number(quan) - 0.5;
+                        document.getElementById(x).value = Number(quan);
+                        var res = s * quan;
+                        if(sum<=100){
+                            var counter = "{{lengthofcart}}";
+                            for(let i=1; i <= Number(counter); i++ ){
+                                var quant = "quantity_" + i;
+                                var sells = "sell_" + i;
+                                var pric = "price_" + i;
+                                var quanti = document.getElementById(quant).value;
+                                var se = document.getElementById(sells).value;
+                                var resu = se * quanti;
+                                var a = document.getElementById(pric);
+                                a.value = resu;
+                            }
+                            sum -= Number(pr) - 20;
+                        }
+                        else{
+                            sum -= Number(pr);
+
+                        }
+                        
+                        
+                        sum += Number(res);
+                        var a = document.getElementById(y);
+                        if(sum<=100){
+                            var counter = "{{lengthofcart}}";
+                            for(let i=1; i <= Number(counter); i++ ){
+                                var quant = "quantity_" + i;
+                                var sells = "sell_" + i;
+                                var pric = "price_" + i;
+                                var quan = document.getElementById(quant).value;
+                                var s = document.getElementById(sells).value;
+                                var resul = s * quan;
+                                var a = document.getElementById(pric);
+                                a.value = Number(resul) + 20;
+                            }
+                        }
+                        else{
+                            a.value = res;
+                        }
+                        
+
+                        
+                        
+                        document.getElementById('subtotal').innerHTML = sum;
+                        
+                        var c = 20;
+                        
+                        if (sum <= 100) {
+                            var d = "{{lengthofcart}}";
+                            c *= Number(d);
+                            var p = Number(sum) + Number(c);
+                            // var a = document.getElementById('totalprice');
+                            // a.value = p;
+                            document.getElementById('dchar').innerHTML = c;
+                            document.getElementById('tot').innerHTML = p;
+
+                        }
+                        else {
+                            document.getElementById('tot').innerHTML = sum;
+                            // var a = document.getElementById('totalprice');
+                            // a.value = z;
+                            document.getElementById('dchar').innerHTML = "0";
+                        
+                        }
+
+                        
+
+                        
+                        
+                    }
+
+
+
+                    
+
+
+
+
+                </script>
+
+
+            </div>
+
+        </div>
+        <p class="bg-green-200 text-sm pl-4 pb-2"> Order today delivery by tommorow before 7 P.M</p>
+
+    </div>
+    <!-- <input class="hidden" id="price" type="text" name="price" value="price{{forloop.counter}} " readonly> -->
+
+    
+
+    {% empty %}
+    <div class="h-screen text-2xl text-red-900 font-bold my-4 py-4 bg-green-200 text-center">
+        Cart is empty please add items to cart.
+    </div>
+    
+    
+
+    {% endfor %}
+
+    
+    <div class="text-center font-normal my-4">
+        <h1 class="font-bold p-2 border-y-2 border-green-400">Payment Options</h1>
+        <p>&#10004; Cash / UPI Payment on delivery at door step.</p>
+    </div>
+
+    <div class="text-center font-normal my-10">
+        <h1 class="font-bold p-2 border-y-2 border-green-400">Fill the Captcha to Confirm the Order.</h1>
+        
+    </div>
+    
+
+    <div class=" text-xl font-sans font-bold w-2/3 mx-auto text-center p-4 bg-green-200 space-y-4">
+        {{ form.captcha }}
+    </div>
+
+    {% if not user.customer_profile %}
+    <div class=" w-40 mx-auto opacity-50 cursor-not-allowed">
+        <button class=" text-2xl p-2 my-5 bg-green-700  hover:bg-green-900 text-center text-white" type="submit"
+            disabled>Place Order</button>
+    </div>
+    <p class="text-center font-bold">Add address above to Enable Place Order button</p>
+
+    {% elif not lengthofcart %}
+    <div class=" w-40 mx-auto opacity-50 cursor-not-allowed">
+        <button class=" text-2xl p-2 my-5 bg-green-700  hover:bg-green-900 text-center text-white" type="submit"
+            disabled>Place Order</button>
+    </div>
+    <p class="text-center font-bold">Add items in cart to Enable Place Order button</p>
+
+
+    {% else %}
+
+    <div class=" w-40 mx-auto">
+        <button class=" text-2xl p-2 my-5 bg-green-700  hover:bg-green-900 text-center text-white" type="submit">Place
+            Order</button>
+
+    </div>
+
+    {% endif %}
+
+
+
+
+
+
+
+</form>
+
+
+
+
+{% endblock body %}

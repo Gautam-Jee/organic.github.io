@@ -1,0 +1,59 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+
+
+    <title>Organic | {% block title %}{% endblock title %} </title>
+</head>
+<body>
+    <!-- for back to top button  -->
+    <!-- <div id="top"></div> -->
+
+    <!-- for big size screen header  -->
+    <div class="sticky top-0 z-50">
+        <nav class="bg-green-700 font-sans font-bold text-xl px-10 py-4 text-white ">
+
+            
+                <a class="px-10 italic font-extrabold	text-3xl flex" href="/">
+                    <img class="h-10 bg-yellow-100 rounded-full mr-2" src="{% static 'images/ol.png' %}" alt="">
+                    Organic</a>
+                
+            
+
+
+
+
+
+            
+        </nav>
+    </div>
+
+    {% block body %}{% endblock body %}
+
+
+    <!-- footer of the page with back to top button  -->
+
+    <footer class=" mt-8 py-20  bg-green-900 text-white text-lg font-sans">
+        <div class=" w-2/3 my-0 mx-auto space-y-10 ">
+            <div class=" w-40 my-0 mx-auto"><a class="rounded-full px-5 py-5 bg-blue-700" href="#top">Back to Top</a>
+            </div>
+            <p class="text-center">This is an Ecommerce-website of vegetables , fruits , grains and flours.
+                This website fill the gap between farmers and customers.
+                Here farmers can sell their products from their home and our team will deliver items to your door step.
+                you can order items after login into the website our team will deliver your items within 24 hours. 
+                you can check the items at your door step and if you are not satisfied with items then
+                you can refuse  to accept the delivery at door step without any charges.
+                The prices of products is according to  your near by local markets.</p>
+        </div>
+    </footer>
+
+    <script src="{% static 'js/base.js' %}"></script>
+</body>
+</html>

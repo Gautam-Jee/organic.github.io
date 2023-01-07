@@ -1,0 +1,245 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+
+
+    <title>Organic | {% block title %}{% endblock title %} </title>
+</head>
+
+<body>
+    <!-- for back to top button  -->
+    <div id="top"></div>
+
+    <!-- for big size screen header  -->
+    <div class="sticky top-0 z-50 mxl:hidden">
+        <nav class="bg-green-700 font-sans font-bold text-xl px-10 py-4 flex justify-between   text-white ">
+
+            <ul class="flex px-10 space-x-5">
+                <li><a class="italic font-extrabold	text-3xl flex" href="/">
+                        <img class="h-10 bg-yellow-100 rounded-full mr-2" src="{% static 'images/ol.png' %}" alt="">
+                        Organic</a></li>
+                <form class="flex" action="/search/" method="get">
+                    <input class="w-96 rounded-l-md h-10 pl-4 text-blue-700 " type="text" placeholder="Search for items"
+                        name="search" id="search">
+                    <button class="" type="submit"><img class="h-10 rounded-r-md" src="{% static 'images/s3.jpg' %}"
+                            alt="Search"> </button>
+                </form>
+            </ul>
+
+
+
+
+
+            <ul class="flex space-x-11">
+
+                <li><a class="" href="/farmers">Farmers(Seller)</a></li>
+                <li><a class="" href="/contact">ContactUs</a></li>
+                <li><a class="" href="/myorders">Orders</a></li>
+
+
+                <li>
+                    <a href="/profile"><img class="h-10" src="{% static 'images/a.png' %}" alt=""></a>
+
+                </li>
+                <li>
+                    <a href="/cart"><img class="h-10" src="{% static 'images/c.png' %}" alt=""></a>
+                    
+
+                </li>
+
+            </ul>
+
+        </nav>
+    </div>
+
+    <!-- for small size screen header  -->
+
+    <div class="xl:hidden sticky top-0 z-50">
+        <nav class="bg-green-700 font-sans font-bold text-xl  py-2   text-white">
+            <div class="flex justify-between">
+
+
+                <div class="flex space-x-2">
+
+                    <button type="button" class="cursor-pointer ml-4" onclick="myFunction()">
+
+
+                        <div id="bicon" class="space-y-1 w-10 py-2 ">
+                            <div class="h-1 w-7 rounded-full bg-white"></div>
+                            <div class="h-1 w-7 rounded-full bg-white"></div>
+                            <div class="h-1 w-7 rounded-full bg-white"></div>
+                        </div>
+
+                        <div id="cross" class="hidden text-3xl text-white pr-4">
+                            &#x2715;
+                        </div>
+
+                        <script>
+                            window.onload = function(){
+                            var x = document.getElementById("bicon");
+                            x.style.display = "block";
+                           }                    
+    
+                        </script>
+                        
+
+
+
+
+
+
+                    </button>
+                    <a class="italic font-extrabold text-2xl flex" href="/">
+                        <img class=" h-9 bg-yellow-100 rounded-full mr-2" src="{% static 'images/ol.png' %}" alt="">
+                        Organic</a>
+
+                </div>
+
+
+                <!-- <li class="flex space-x-2 "> -->
+                <a href="/cart"><img class="h-10 mr-4" src="{% static 'images/c.png' %}" alt="image"></a>
+                <!-- <a href="#cart">Cart</a> -->
+                <!-- </li> -->
+            </div>
+
+            <div class="mx-4">
+
+
+                <form class="flex w-full" action="/search">
+                    <input class="w-full rounded-l-md h-10 pl-4 text-blue-700 " type="text"
+                        placeholder="Search for items" name="search">
+                    <button class="" type="submit"><img class="h-10 rounded-r-md" src="{% static 'images/s3.jpg' %}"
+                            alt="Search"> </button>
+                </form>
+
+
+            </div>
+
+
+        </nav>
+
+
+        <nav id="burger" class="hidden ml-0 w-full bg-green-700 space-y-7 font-sans text-xl  py-4  text-white ">
+
+            <a class="flex space-x-7 pl-7 ml-0 hover:rounded-full  hover:bg-green-400" href="/contact">
+                <img class="h-10 w-10" src="{% static 'images/co.png' %}" alt="">
+                <div class="pt-2">ContactUs</div>
+            </a>
+
+
+            <a class="flex space-x-7 pl-7 hover:rounded-full  hover:bg-green-400" href="/myorders">
+                <img class="h-10 w-10" src="{% static 'images/or.png' %}" alt="">
+                <div class="pt-2">My Orders</div>
+            </a>
+
+            <a class="flex space-x-7 pl-7 hover:rounded-full  hover:bg-green-400" href="/cart">
+                <img class="h-10 w-10" src="{% static 'images/c.png' %}" alt="">
+                <div class="pt-2">My Cart</div>
+            </a>
+
+            <a class="flex space-x-7 pl-7 hover:rounded-full  hover:bg-green-400" href="/profile">
+                <img class="h-10 w-10" src="{% static 'images/a.png' %}" alt="">
+                <div class="pt-2">My Account</div>
+            </a>
+
+            <a class="flex space-x-7 pl-7 hover:rounded-full  hover:bg-green-400" href="/farmers">
+                <img class="h-10 w-10" src="{% static 'images/a.png' %}" alt="">
+                <div class="pt-2">Farmers(Seller)</div>
+            </a>
+
+
+            <a class="flex space-x-7 pl-7 hover:rounded-full  hover:bg-green-400" href="/about">
+                <img class="h-10 w-10 py-1" src="{% static 'images/ab.png' %}" alt="">
+                <div class="pt-2">AboutUs</div>
+            </a>
+
+
+
+
+
+        </nav>
+
+    </div>
+
+    <!-- categories module -->
+    <div class="z-40 flex py-2 justify-evenly font-sans font-bold bg-green-50">
+        <a href="/Vegetables">
+            <img class="w-10 h-10" src="{% static 'images/v.png' %}" alt="">
+            <div class=" -ml-5">Vegetables</div>
+        </a>
+
+        <a href="/Fruits">
+            <img class="w-10 h-10" src="{% static 'images/f.png' %}" alt="">
+            <div>Fruits</div>
+
+        </a>
+
+        <a href="/Grains">
+            <img class="w-10 h-10" src="{% static 'images/g.png' %}" alt="">
+            <div>Grains</div>
+
+        </a>
+
+        <a href="/Flours">
+            <img class="w-10 h-10" src="{% static 'images/fl.png' %}" alt="">
+            <div>Flours</div>
+
+        </a>
+
+
+
+    </div>
+
+
+    {% block body %}{% endblock body %}
+
+
+
+
+
+
+    <!-- footer of the page with back to top button  -->
+
+    <footer class=" mt-8 py-20  bg-green-900 text-white text-lg font-sans">
+        <div class=" w-2/3 my-0 mx-auto space-y-10 ">
+            <div class=" w-40 my-0 mx-auto"><a class="rounded-full px-5 py-5 bg-blue-700" href="#top">Back to Top</a>
+            </div>
+            <p class="text-center">This is an Ecommerce-website of vegetables , fruits , grains and flours.
+                This website fill the gap between farmers and customers.
+                Here farmers can sell their products from their home and our team will deliver items to your door step.
+                you can order items after login into the website our team will deliver your items within 24 hours. 
+                you can check the items at your door step and if you are not satisfied with items then
+                you can refuse  to accept the delivery at door step without any charges.
+                The prices of products is according to  your near by local markets.
+            </p>
+        </div>
+    </footer>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- javascript of the page  -->
+
+    <script src="{% static 'js/base.js' %}"></script>
+</body>
+
+</html>

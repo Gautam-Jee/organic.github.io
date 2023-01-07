@@ -1,0 +1,156 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+
+{% block title %}Flours{% endblock title %}
+
+{% block body %}
+
+
+
+<div class="mxl:hidden font-sans  px-4 my-4 mx-auto bg-green-50  pt-4 max-w-6xl text-xl grid grid-cols-4  gap-10 py-4">
+
+    {% for prod in products %}
+                
+                    <div class="space-y-4 bg-green-200 text-center">
+                        <a class="font-semibold" href="">
+                            <img class="max-w-lg h-40 mx-auto" src="/media/{{prod.image}}" alt="">
+                            <h2 class="">{{prod.name}}</h2>
+                            <p class="text-green-900">
+                                {% for prods in adminproducts %}
+                                {% if prod.id == prods.product.id %}
+                                <span class="pr-4 line-through text-red-700">₹{{prods.marked_price}}/kg</span>
+                                ₹{{prods.selling_price}}/kg
+                                {% endif %}
+                                {% endfor %}
+                        
+                            </p>
+                        </a>
+
+                        {% if prod.status == "2" %}
+                          <div class="text-red-700 font-extrabold">
+                              Currently Unavailable
+          
+                               </div>
+                          {% else %} 
+                          <div class="text-blue-700 font-normal text-lg">
+                              {{prod.desc}}
+                              
+          
+                               </div>
+          
+                        {% endif %}
+
+
+
+
+                        <div class="justify-evenly pb-5 text-base flex">
+                            {% if prod.id in ids %}
+                                <a class="  py-2 px-4 bg-blue-700 text-white rounded-full hover:bg-green-900" href="/cart" >GoTo cart</a>
+                                {% else %}
+                                {% if prod.status == "2" %}
+                                <form action="{% url 'addcart' prod.id  %}" method="post" disabled>
+                                    {% csrf_token %}
+                                    <fieldset class="opacity-50 cursor-not-allowed" disabled="disabled">
+                                        <input type="hidden" name="current" id="current" value="{{request.path}}">
+                                        <input class=" cursor-pointer py-2 px-4 bg-green-700 text-white rounded-full hover:bg-green-900" type="submit" value="Add cart">
+                                    </fieldset>
+                                </form>
+                                {% else %}
+                                <form action="{% url 'addcart' prod.id  %}" method="post">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="current" id="current" value="{{request.path}}">
+                                    <input class=" cursor-pointer py-2 px-4 bg-green-700 text-white rounded-full hover:bg-green-900" type="submit" value="Add cart">
+                                </form>
+                                {% endif %}
+                            {% endif %}
+                                
+                            {% if prod.status == "2" %}
+                                <a class="py-2 px-4 bg-green-700 text-white rounded-full hover:bg-green-900 pointer-events-none opacity-50 cursor-not-allowed" href="{% url 'checkout' prod.id  %}">Order</a>
+            
+                            {% else %}
+                            <a class="py-2 px-4 bg-green-700 text-white rounded-full hover:bg-green-900" href="{% url 'checkout' prod.id  %}">Order</a>
+                            {% endif %}
+                            </div>
+            
+        
+                    </div>
+                
+            {% endfor %}
+    
+    </div>
+    
+    
+    <div class="xl:hidden font-sans  sm:px-2 px-9 my-4 mx-auto bg-green-50  pt-4 sm:max-w-xl max-w-xs text-xl grid sm:grid-cols-2 grid-cols-1  gap-10 py-4">
+    
+        {% for prod in products %}
+                    
+                        <div class="space-y-4 bg-green-200 text-center">
+                            <a class="font-semibold" href="">
+                                <img class="max-w-lg h-40 mx-auto" src="/media/{{prod.image}}" alt="">
+                                <h2 class="">{{prod.name}}</h2>
+                                <p class="text-green-900">
+                                    {% for prods in adminproducts %}
+                                    {% if prod.id == prods.product.id %}
+                                    <span class="pr-4 line-through text-red-700">₹{{prods.marked_price}}/kg</span>
+                                    ₹{{prods.selling_price}}/kg
+                                    {% endif %}
+                                    {% endfor %}
+                                </p>
+                            </a>
+
+                            {% if prod.status == "2" %}
+                               <div class="text-red-700 font-extrabold">
+                                   Currently Unavailable
+               
+                                    </div>
+                               {% else %} 
+                               <div class="text-blue-700 font-normal text-lg">
+                                   {{prod.desc}}
+                                   
+               
+                                    </div>
+               
+                             {% endif %}
+
+
+
+
+                             <div class="justify-evenly pb-5 text-base flex">
+                                {% if prod.id in ids %}
+                                    <a class="  py-2 px-4 bg-blue-700 text-white rounded-full hover:bg-green-900" href="/cart" >GoTo cart</a>
+                                    {% else %}
+                                    {% if prod.status == "2" %}
+                                    <form action="{% url 'addcart' prod.id  %}" method="post" disabled>
+                                        {% csrf_token %}
+                                        <fieldset class="opacity-50 cursor-not-allowed" disabled="disabled">
+                                            <input type="hidden" name="current" id="current" value="{{request.path}}">
+                                            <input class=" cursor-pointer py-2 px-4 bg-green-700 text-white rounded-full hover:bg-green-900" type="submit" value="Add cart">
+                                        </fieldset>
+                                    </form>
+                                    {% else %}
+                                    <form action="{% url 'addcart' prod.id  %}" method="post">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="current" id="current" value="{{request.path}}">
+                                        <input class=" cursor-pointer py-2 px-4 bg-green-700 text-white rounded-full hover:bg-green-900" type="submit" value="Add cart">
+                                    </form>
+                                    {% endif %}
+                                {% endif %}
+                                    
+                                {% if prod.status == "2" %}
+                                    <a class="py-2 px-4 bg-green-700 text-white rounded-full hover:bg-green-900 pointer-events-none opacity-50 cursor-not-allowed" href="{% url 'checkout' prod.id  %}">Order</a>
+                
+                                {% else %}
+                                <a class="py-2 px-4 bg-green-700 text-white rounded-full hover:bg-green-900" href="{% url 'checkout' prod.id  %}">Order</a>
+                                {% endif %}
+                                </div>
+                
+                        </div>
+                    
+                {% endfor %}
+        
+        </div>
+    
+
+{% endblock body %}

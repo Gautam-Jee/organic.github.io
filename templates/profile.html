@@ -1,0 +1,145 @@
+{% extends 'headfoot.html' %}
+
+{% load static %}
+
+
+{% block title %}Profile{% endblock title %}
+
+
+
+{% block body %}
+
+{% if messages %}
+<div class="p-5 my-2 bg-green-400 text-white font-sans text-2xl">
+    <span class=" font-bold float-right cursor-pointer hover:text-black text-4xl"
+        onclick="this.parentElement.style.display='none';">&times;</span>
+    {% for message in messages %}
+    <span {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</span>
+    {% endfor %}
+</div>
+{% endif %}
+
+
+<div class="text-2xl p-2 my-5 bg-blue-700 mx-auto w-1/2 rounded-full hover:bg-blue-900 text-center text-white"><a
+        href="/">Continue shopping</a>
+</div>
+
+{% if not user.customer_profile %}
+<div class="border-2 border-green-200 p-4 text-xl text-green-900 font-extrabold">
+    <button type="button" class="cursor-pointer" onclick="addFunction()"> + Add Address </button>
+</div>
+
+{% endif %}
+
+<div id="form" class="hidden my-5 p-2 mx-auto bg-green-100 w-4/6 text-xl font-sans font-bold rounded-md">
+    <form class="space-y-4" action="/profile/" method="post">
+        {% csrf_token %}
+
+        <h1 class="text-2xl font-bold ">Add Address</h1>
+
+        <div>
+            <div><label for="fname">First Name: </label></div>
+            <input id="fname" name="fname" class=" p-2 my-2" type="text" placeholder=" enter first Name"
+                value="{{user.first_name}}" readonly>
+
+
+        </div>
+
+        <div>
+            <div><label for="lname">Last Name: </label></div>
+            <input id="lname" name="lname" class=" p-2 my-2" type="text" placeholder="Enter last Name"
+                value="{{user.last_name}}" readonly>
+
+
+        </div>
+
+
+        <div>
+            <div><label for="phone">Mobile Number: </label></div>
+            <input id="phone" name="phone" class=" p-2 my-2" type="tel" placeholder="10-digit mobile number "
+                value="{{user.username}}">
+
+        </div>
+
+        <div>
+            <div><label for="pin">Pin Code: </label></div>
+            <input id="pin" name="pin" class=" p-2 my-2" type="number" placeholder="Enter pincode" required>
+
+        </div>
+
+        <div>
+            <div><label for="loc">Locality: </label></div>
+            <input id="loc" name="loc" class=" p-2 my-2" type="text" placeholder=" Enter Locality" required>
+
+        </div>
+
+        <div>
+            <div><label for="add">Address (Area & Street): </label></div>
+            <textarea class=" p-2 my-2" name="add" id="add" cols="23" rows="5" placeholder=" Enter Address" required></textarea>
+
+        </div>
+
+        <div>
+            <div><label for="city">City/District/Town: </label></div>
+            <input id="city" name="city" class=" p-2 my-2" type="text" placeholder=" Enter City/District/Town"
+                value="Begusarai" readonly>
+
+        </div>
+
+        <div>
+            <div><label for="state">State: </label></div>
+            <input id="state" name="state" class=" p-2 my-2" type="text" placeholder=" Enter state " value="Bihar"
+                readonly>
+
+        </div>
+
+        <div>
+            <div><label for="mark">Landmark: </label></div>
+            <input id="mark" name="mark" class=" p-2 my-2 text-xs" type="text" placeholder="Like: Near Government primary school " required>
+
+        </div>
+
+        <button class="text-2xl p-2 my-5 bg-green-700  w-1/2  hover:bg-green-900 text-center text-white"
+            type="submit">Save</button>
+    </form>
+
+</div>
+
+{% if user.customer_profile %}
+<div class=" m-4 p-4 bg-green-100 ">
+
+
+    <a class="text-xl font-bold text-white bg-blue-700 hover:bg-blue-900 rounded-md p-2 float-right " href="{% url 'edit_profile' user.customer_profile.id  %} ">EDIT</a>
+    <h1 class=" font-bold text-2xl">Delivery Address</h1>
+    {% if user.customer_profile.phone != user.username %}
+
+    Login Mobile Number: {{user.username}} <br>
+
+
+    {% endif %}
+
+    
+    {{user.customer_profile.First_name}} {{user.customer_profile.Last_name}} <br>
+    {{user.customer_profile.phone}} <br>
+    {{user.customer_profile.address}} <br>
+    {{user.customer_profile.locality}} {{user.customer_profile.pincode}} <br>
+    {{user.customer_profile.city}} {{user.customer_profile.state}} <br>
+    {{user.customer_profile.landmark}} <br>
+    {{user.customer_profile.email}} <br>
+
+</div>
+
+{% endif %}
+
+<div class="text-2xl p-2 mt-5 bg-blue-700 mx-auto w-1/2 rounded-full  hover:bg-blue-900 text-center text-white"><a
+        href="/logout">Logout</a>
+</div>
+
+
+
+
+
+
+
+
+{% endblock body %}

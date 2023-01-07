@@ -1,0 +1,38 @@
+{% extends 'headfoot.html' %}
+
+{% load static %}
+
+
+{% block title %}Edit Profile{% endblock title %}
+
+
+
+{% block body %}
+
+<!-- edit profile page {{id}} -->
+<!-- <form action="/edit_profile/" method="post">
+    {% csrf_token %}
+
+    
+    <button class="text-2xl p-2 my-5 bg-green-700  w-1/2  hover:bg-green-900  text-white"
+            type="submit">Save</button>
+
+</form> -->
+
+
+<div class=" my-5 p-2 mx-auto bg-green-100 w-4/6 text-xl font-sans font-bold rounded-md">
+    <form class="space-y-4" action="" method="post">
+        {% csrf_token %}
+        <h1 class="text-2xl font-bold text-center">Edit/Update Product information</h1>
+        {{form.as_p}}
+        
+        
+        <button class="text-2xl p-2 my-5 bg-green-700  w-1/2  hover:bg-green-900 text-center text-white"
+            type="submit">Save</button>
+    </form>
+
+</div>
+
+
+
+{% endblock body %}

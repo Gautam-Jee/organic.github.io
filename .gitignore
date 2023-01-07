@@ -1,0 +1,5 @@
+.vs
+.vscode
+jstools/node_modules
+jstools/package.json
+media

@@ -1,0 +1,55 @@
+{% extends 'headfoot.html' %}
+
+{% load static %}
+
+
+{% block title %}Login{% endblock title %}
+
+
+
+{% block body %}
+
+{% if messages %}
+<div class="p-5 my-2 bg-green-400 text-white font-sans text-2xl">
+    <span class=" font-bold float-right cursor-pointer hover:text-black text-4xl" onclick="this.parentElement.style.display='none';">&times;</span>
+    {% for message in messages %}
+    <span {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</span>
+    {% endfor %}
+</div>
+{% endif %}
+<!-- login body -->
+<div class="text-2xl font-sans  p-4 text-white">
+    <div class="bg-blue-500 my-10 p-4 text-center">
+        <a href="/registration">If you are new user first register yourself then LOGIN with registered
+            Mobile Number and OTP. <div class="mt-4 p-2 bg-blue-700 mx-auto w-full rounded-full hover:bg-blue-900">Register Yourself</div></a>
+    </div>
+
+    <h1 class=" bg-green-600 p-2 text-4xl text-center">USER LOGIN</h1>
+    <form class="bg-green-500 my-4 rounded-md" action="/login/" method="POST">
+        {% csrf_token %}
+
+
+        <div class=" pt-6 text-center space-x-2">
+            <label class="cursor-pointer" for="username">Mobile No : </label>
+            <input class=" text-green-900 text-sm p-2 " type="tel" placeholder="Enter phone number" name="username"
+                id="username">
+        </div>
+
+        <div class=" py-6 text-center space-x-5">
+            <label class="cursor-pointer" for="password">Password : </label>
+            <input class=" text-green-900 text-sm p-2 " type="password" placeholder="Enter password" name="password"
+                id="password">
+        </div>
+
+        <button class="p-2 bg-blue-700 mx-auto w-full rounded-full hover:bg-blue-900" type="submit">Submit</button>
+
+
+    </form>
+
+</div>
+
+
+
+
+
+{% endblock body %}

@@ -1,0 +1,97 @@
+
+{% extends 'headfoot.html' %}
+
+{% load static %}
+
+
+{% block title %}Profile{% endblock title %}
+
+
+
+{% block body %}
+
+{% if messages %}
+<div class="p-5 my-2 bg-green-400 text-white font-sans text-2xl">
+    <span class=" font-bold float-right cursor-pointer hover:text-black text-4xl"
+        onclick="this.parentElement.style.display='none';">&times;</span>
+    {% for message in messages %}
+    <span {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</span>
+    {% endfor %}
+</div>
+{% endif %}
+
+
+
+
+<div class="text-sm  font-normal my-4  bg-green-200">
+    {% if farmerproducts %}
+    <div class="my-4 ">
+        <a class="text-xl font-bold text-white bg-blue-700 hover:bg-blue-900 rounded-md p-2 float-right " href="/customer_orders">Customers Orders</a>
+    </div>
+        
+    <table class="my-4 mx-auto">
+        <thead class="">
+                <th class="px-2">PRODUCTS</th>
+                <th class="px-2">Daily Selling Limit</th>
+                <th class="px-2">STATUS</th>
+                <th class="px-2">PRICE per kg</th>
+                
+        </thead>
+
+        <tbody>
+            {% for products in farmerproducts %}
+    
+                <tr class=" border-y-2 border-blue-900 bg-blue-700 text-white">
+                    <td class="px-2 py-4">{{products.product}} </td>
+                    <td class="px-2">{{products.daily_selling_quantity}} kg </td>
+                    <td class="px-2">
+                        {% if products.status == '1' %}
+                        Available 
+                        {% else %}
+                        Unavailable
+                        {% endif %}
+    
+                    </td>
+                    <td class="px-2">₹
+                        {% for prods in adminproducts %}
+                        {% if products.product.id == prods.product.id %}
+                        {{prods.cost_price}}
+                        {% endif %}
+                        {% endfor %}
+                    </td>
+                    <td class="px-2 ">
+                    <a class="text-xs font-bold text-white bg-green-700 hover:bg-green-900 rounded-md p-1 " href="{% url 'edit_farmerproduct' products.id  %} ">edit</a>
+                    </td>
+                    <td class="px-2">
+                        <a class="text-xs font-bold text-white bg-red-700 hover:bg-red-900 rounded-md p-1  " href="{% url 'delete_farmerproduct' products.id  %}">del</a>
+                        </td>
+                </tr>
+                {% endfor %}
+
+            
+        </tbody>
+
+
+    </table>
+    {% else %}
+    <div class="text-2xl text-center">No any products added yet please add products to sell on this platform</div>
+    {% endif %}
+</div>
+
+
+<div class=" my-5 p-2 mx-auto bg-green-100 w-4/6 text-sm font-sans font-bold rounded-md">
+    <form class="space-y-4" action="/farmers/" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <h1 class="text-2xl font-bold text-center">Add Product</h1>
+        {{form.as_p}}
+        
+        <p class="text-blue-700">Price of items/products that our team will pay you at the time of pick up the products will be display on above of this page after you save the products details.</p>
+        <button class="text-2xl p-2 my-5 bg-green-700  w-1/2  hover:bg-green-900 text-center text-white"
+            type="submit">Save</button>
+    </form>
+
+</div>
+
+
+
+{% endblock body %}

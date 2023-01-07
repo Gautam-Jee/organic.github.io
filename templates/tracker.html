@@ -1,0 +1,86 @@
+{% extends 'headfoot.html' %}
+
+{% load static %}
+
+
+{% block title %}Tracker{% endblock title %}
+
+
+
+{% block body %}
+
+
+<div class="max-w-xl mx-auto my-4 text-xl">
+    <div class="space-y-4 bg-green-200  p-2 font-semibold flex space-x-4">
+            <img class="w-1/5 h-1/5" src="/media/{{order.product.image}}" alt="">
+            <div class="w-1/2  my-auto text-center">
+                <h2 id="">{{order.product.name}}</h2>
+                
+                <!-- <label class="text-blue-900 text-sm" for="quantity">weight(quantity):</label>
+                    <div>
+                        <input class="w-20" type="number" id="quantity" name="quantity" value="{{order.quantity}}" readonly >
+                        <label for="quantity">kg</label>
+                    </div>
+                         -->
+                    <p class="pt-2">Pay: ₹{{order.price}} </p>
+            </div>
+    </div>
+    <p class="text-blue-900 bg-green-200 text-sm pl-4">
+        Order date: {{order.date}}       
+    </p>
+</div>
+
+<div class="w-1/2 mx-auto  text-2xl text-green-700 my-10  ">
+    
+    <li>Ordered</li>
+    <div class="h-20 w-1 bg-green-700 -my-4 ml-0.5"></div>
+<div id="way" class="hidden animate-fade">
+    <div class="h-20 w-1 bg-green-700 -my-4 ml-0.5"></div>
+    <li>On the way</li>
+    <div class="h-20 w-1 bg-green-700 -my-4 ml-0.5  "></div>
+</div>
+<div id="dele" class="hidden animate-fade">
+    <div class="h-20 w-1 bg-green-700 -my-4 ml-0.5  "></div>
+    <li>Delivered</li>
+    
+</div>
+<div id="ref" class="hidden animate-fade"> 
+    <div class="h-20 w-1 bg-green-700 -my-4 ml-0.5"></div>      
+    <div class="h-20 w-1 bg-green-700 -my-4 ml-0.5"></div>
+    <li>Refused</li>
+</div>
+
+</div>
+
+<script>
+if("{{track.productStatus}}" == "2"){
+    var x= document.getElementById("way");
+    x.style.display = "block";
+}
+
+if("{{track.productStatus}}" == "3"){
+    var y= document.getElementById("way");
+    y.style.display = "block";
+    var x= document.getElementById("dele");
+    x.style.display = "block";
+}
+
+if("{{track.productStatus}}" == "4"){
+    var y= document.getElementById("way");
+    y.style.display = "block";
+    var x= document.getElementById("dele");
+    x.style.display = "block";
+    var z= document.getElementById("ref");
+    z.style.display = "block";
+}
+
+
+
+
+
+</script>
+
+
+{% endblock body %}
+
+this is tacker page.
