@@ -2,3 +2,7 @@
 .vscode
 jstools/node_modules
 jstools/package.json
+db.sqlite3
+organic/__pycache__
+store/__pycache__
+store/migrations/
